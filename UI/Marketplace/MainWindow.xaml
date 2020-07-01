@@ -1,0 +1,182 @@
+﻿<core:BaseWindowMenu
+    x:Class="CryoFall.Marketplace.UI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:AtomicTorch.CBND.CoreMod.UI.Controls.Core;assembly=Core"
+    xmlns:base="clr-namespace:AtomicTorch.GameEngine.Common.Client.MonoGame.UI;assembly=AtomicTorch.CBND.GameApi.WPF.Stubs" 
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase">
+
+    <base:BaseUserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UI/Marketplace/Styles/DefaultStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </base:BaseUserControl.Resources>
+
+    <core:GameWindow x:Name="GameWindow"
+                     Width="{StaticResource GameMenuBigWindowWidth}"
+                     Height="{StaticResource GameMenuBigWindowHeight}"
+                     IsCached="True">
+
+        <Grid x:Name="RootGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="0,0,0,3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="FontSize" Value="13" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Margin" Value="3" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <CheckBox x:Name="IsBuying"
+                                Content="Is Buying"
+                                IsChecked="{Binding ModeBuying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <CheckBox x:Name="IsSelling"
+                                Content="Is Selling"
+                                IsChecked="{Binding ModeSelling, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <Border Grid.Column="1"
+                        BorderThickness="0,0,0,1"
+                        BorderBrush="{StaticResource ItemBorderNormalBrush}"
+                        Background="{StaticResource ItemBackgroundNormalBrush}"
+                        VerticalAlignment="Center"
+                        Margin="5,5,0,0">
+                    <core:TextBoxSearch
+                        SearchText="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="1" />
+                </Border>
+
+                <Button Grid.Column="2"
+                        x:Name="RefreshButton"
+                        Content="Refresh"                      
+                        Command="{Binding Refresh}"
+                        Style="{StaticResource RefreshButton}">
+                </Button>
+            </Grid>
+
+            <!-- Entity list -->
+            <Grid x:Name="EntityListGrid"
+                  Grid.Row="1"
+                  Grid.Column="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal"
+                            x:Name="NavigationRoot"
+                            HorizontalAlignment="Center"
+                            Margin="0,-4,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}" />
+                    </StackPanel.Resources>
+                    <Button Content="&lt;"
+                            Command="{Binding PrevPage}"
+                            IsEnabled="{Binding EntityViewModelCollection.IsNotFirstPage}"/>
+                    <TextBlock Text="( "/>
+                    <TextBlock Text="{Binding EntityViewModelCollection.CurrentPage}"/>
+                    <TextBlock Text=" / "/>
+                    <TextBlock Text="{Binding EntityViewModelCollection.PageCount}"/>
+                    <TextBlock Text=" )"/>
+                    <Button Content="&gt;"
+                            Command="{Binding NextPage}"
+                            IsEnabled="{Binding EntityViewModelCollection.IsNotLastPage}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="100" Content="Coords" Command="{Binding Sort}" CommandParameter="Coords" VerticalAlignment="Top" />
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="90" Content="Mode" Command="{Binding Sort}" CommandParameter="Mode" VerticalAlignment="Top" />
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="50" Content="Qty" Command="{Binding Sort}" CommandParameter="Qty" VerticalAlignment="Top" />
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="{Binding NameWidth}" Content="Name" Command="{Binding Sort}" CommandParameter="Name" VerticalAlignment="Top" />
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="65" Content="Shiny" Command="{Binding Sort}" CommandParameter="PriceCoinShiny" VerticalAlignment="Top" />
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="65" Content="Penny" Command="{Binding Sort}" CommandParameter="PriceCoinPenny" VerticalAlignment="Top" />
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="65" Content="S. Ratio" Command="{Binding Sort}" CommandParameter="PriceCoinShinyRatio" VerticalAlignment="Top" />
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="65" Content="P. Ratio" Command="{Binding Sort}" CommandParameter="PriceCoinPennyRatio" VerticalAlignment="Top" />
+                    <Button Style="{StaticResource ButtonTitle}" MinWidth="65" Content="Available" Command="{Binding Sort}" CommandParameter="Count" VerticalAlignment="Top" 
+                            Visibility="{Binding IsCountVisible}" />
+                </StackPanel>
+
+                <ItemsControl x:Name="LotItemsControl"
+                              Grid.Row="1"
+                              Margin="0,20,0,0"
+                              Style="{StaticResource LotItemsControl}">
+                    <ItemsControl.Resources>
+                        <CollectionViewSource x:Key="viewSource" Source="{Binding EntityViewModelCollection.Items}">
+                            <CollectionViewSource.SortDescriptions>
+                                <scm:SortDescription PropertyName="Name" Direction="Ascending"/>
+                            </CollectionViewSource.SortDescriptions>
+                        </CollectionViewSource>
+                    </ItemsControl.Resources>
+                    <ItemsControl.ItemsSource>
+                        <Binding Source="{StaticResource viewSource}"/>
+                    </ItemsControl.ItemsSource>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource MarketButton}"
+                                        Content="{Binding Coords}" >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding ElementName=LotItemsControl,  Path=DataContext.Notify}" CommandParameter="{Binding }" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                                <TextBlock Style="{StaticResource ItemsControlTextBlock}" Width="90" Text="{Binding Mode}" />
+                                <TextBlock Style="{StaticResource ItemsControlTextBlock}" Width="50" Text="{Binding Qty}" />
+                                <TextBlock Style="{StaticResource ItemsControlTextBlock}" Width="{Binding ElementName=LotItemsControl,  Path=DataContext.NameWidth}" Text="{Binding Name}" />
+                                <TextBlock Style="{StaticResource ItemsControlTextBlock}" Width="65" Text="{Binding PriceCoinShiny}" />
+                                <TextBlock Style="{StaticResource ItemsControlTextBlock}" Width="65" Text="{Binding PriceCoinPenny}" />
+                                <TextBlock Style="{StaticResource ItemsControlTextBlock}" Width="65" Text="{Binding PriceCoinShinyRatio}" />
+                                <TextBlock Style="{StaticResource ItemsControlTextBlock}" Width="65" Text="{Binding PriceCoinPennyRatio}" />
+                                <TextBlock Style="{StaticResource ItemsControlTextBlock}" Width="65" Text="{Binding CountString}" Visibility="{Binding ElementName=LotItemsControl,  Path=DataContext.IsCountVisible}" />
+                            </VirtualizingStackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+
+                <StackPanel Grid.Row="2"
+                            Style="{StaticResource BottomPanel}"
+                            Margin="0,3,0,0">
+                    <TextBlock Text="Lot count: " />
+                    <TextBlock Text="{Binding EntityViewModelCollection.EntityCount}" />
+
+                    <TextBlock Margin="30,0,0,0" Text="{Binding EntityViewModelCollection.DateString}" />
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+
+    </core:GameWindow>
+
+</core:BaseWindowMenu>
