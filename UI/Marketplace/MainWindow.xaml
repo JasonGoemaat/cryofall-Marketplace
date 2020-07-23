@@ -143,7 +143,17 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal">
-                                <Button Style="{StaticResource MarketButton}"
+                                <Button Visibility="{Binding IsOwner, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Reverse}"
+                                        Style="{StaticResource MarketButton}"
+                                        Content="{Binding Coords}" >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding ElementName=LotItemsControl,  Path=DataContext.Notify}" CommandParameter="{Binding }" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                                <Button Visibility="{Binding IsOwner, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Style="{StaticResource MarketButtonOwner}"
                                         Content="{Binding Coords}" >
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Click">

@@ -37,6 +37,12 @@
     }
     private bool isBuying;
 
+    public bool IsOwner
+    {
+      get { return this.isOwner; }
+    }
+    private bool isOwner;
+
     public string Name
     {
       get { return this.name; }
@@ -92,6 +98,7 @@
       this.worldX = (ushort)(mark.TilePosition.X - worldBoundsOffset.X);
       this.worldY = (ushort)(mark.TilePosition.Y - worldBoundsOffset.Y);
       this.isBuying = isBuying;
+      this.isOwner = mark.IsOwner;
       this.name = lot.ProtoItem.Name;
       this.qty = lot.LotQuantity;
       this.count = lot.CountAvailable;
