@@ -74,7 +74,9 @@
 
     private bool SearchFilter(LotInfoEntityViewModel model)
     {
-      return model.Name.ToLower().Contains(searchText.ToLower());
+      return
+        model.Name.ToLower().Contains(searchText.ToLower()) ||
+        model.ProtoItemType.ToLower().Contains((searchText.ToLower()));
     }
 
     private bool ModeFilter(LotInfoEntityViewModel model)

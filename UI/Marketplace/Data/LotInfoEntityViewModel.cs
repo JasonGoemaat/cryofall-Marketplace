@@ -89,6 +89,12 @@
     }
     private double priceCoinPennyRatio;
 
+    public string ProtoItemType
+    {
+      get { return this.protoItemType; }
+    }
+    private string protoItemType;
+
     public static string SortProperty = "";
     public static string SortOrder = "Asc";
 
@@ -106,6 +112,10 @@
       this.priceCoinPenny = lot.PriceCoinPenny;
       this.priceCoinShinyRatio = 0;
       this.priceCoinPennyRatio = 0;
+      this.protoItemType = lot.ProtoItem.GetType().ToString()
+        .Replace("AtomicTorch.CBND.CoreMod.Items.Generic.Item", "")
+        .Replace("AtomicTorch.CBND.CoreMod.Items.Generic.", "");
+
       if (this.qty != 0)
       {
         this.priceCoinShinyRatio = Math.Round((double)lot.PriceCoinShiny / (double)this.qty, 3);

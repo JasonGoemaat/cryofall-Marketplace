@@ -13,6 +13,9 @@
 
     public async static void Init()
     {
+      if (CurrentView.Count() == 0)
+        CurrentView.IsReady = true;
+
       if (!CurrentView.IsReady)
         return;
 
