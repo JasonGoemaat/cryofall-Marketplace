@@ -57,7 +57,7 @@
       }
       else
       {
-        Api.Logger.Error("Marketplace: HUDLayoutControl not found.");
+        //Api.Logger.Error("Marketplace: HUDLayoutControl not found.");
       }
 
       gameplayInputContext = ClientInputContext
