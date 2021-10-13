@@ -6,8 +6,8 @@
   <title>Marketplace mod</title>
   <author>Discord:Mars#8365</author>
   <description>List of all trading stations, based on CNEI interface by Djekke</description>
-  <version>0.1.4</version>
-  <updated>26.07.2020</updated>
+  <version>0.1.5</version>
+  <updated>12.10.2021</updated>
   <!-- Mod type: 1 - server, 2 - client-server, 3 - client -->
   <!-- Please note: mods of type 1 and 2 are ignored
                     when you're connecting to the server which is missing them -->
